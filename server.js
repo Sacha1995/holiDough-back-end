@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 
 app.use(express.json());
-app.use("/demo", require("./routes/demo"));
+app.use("/login", require("./routes/login/login"));
 
 const port = process.env.PORT || 6001;
 app.listen(port, () => {
