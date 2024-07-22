@@ -28,7 +28,7 @@ const getExpensesFromIdTrip = (id) => {
                 FROM expenses WHERE trip_id LIKE ${id};`;
 };
 
-const getSplitsFromIdTrip = (id) => {
+const getSplitsFromIdExpenses = (id) => {
   return `SELECT id,
             description,
             date,
@@ -40,11 +40,11 @@ const getSplitsFromIdTrip = (id) => {
             from_currency AS fromCurrency,
             to_value AS toValue,
             to_currency as toCurrency
-                FROM splits WHERE trip_id LIKE ${id};`;
+                FROM splits WHERE expense_id LIKE ${id};`;
 };
 
 module.exports = {
   getTripsFromIdUser,
   getExpensesFromIdTrip,
-  getSplitsFromIdTrip,
+  getSplitsFromIdExpenses,
 };
