@@ -8,16 +8,18 @@ const {
 } = require("../mySQL/queries");
 
 // get trip info
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
   //do checks for user ID
-  if (!req.body.id) {
+  if (!id) {
     return res.status(400).send({
       status: 0,
       message: "no user id input",
     });
   }
 
-  if (typeof req.body.id !== "number") {
+  if (typeof id !== "number") {
     return res.status(400).send({
       status: 0,
       message: "user id must be a number",
@@ -27,7 +29,7 @@ router.get("/", async (req, res) => {
   //get the trips info from the user_id
   let trips = [];
   try {
-    const flatTrips = await query(getTripsFromIdUser(1));
+    const flatTrips = await query(getTripsFromIdUser(id));
 
     //what to do if there are no trips??
 
