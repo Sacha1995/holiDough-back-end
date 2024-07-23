@@ -11,16 +11,16 @@ const schema = Joi.object({
         fromCurrency: Joi.string().required(),
         toCurrency: Joi.string().required(),
     }),
-    split: Joi.boolean().required(),
-    category: Joi.string().required(),
+    paid: Joi.boolean().required(),
+    name: Joi.string().required(),
     description: Joi.string().required(),
     id: Joi.string().required(),
-    sharedID: Joi.string(),
+    expenseID: Joi.string(),
 });
 
 router.post("/", async (req, res) => {
-    const validation = schema.validate(req.body.expense, { abortEarly: false });
-    const {date, amount, split, category, description, id, sharedID} = req.body.expense
+    const validation = schema.validate(req.body.billSplit, { abortEarly: false });
+    const {date, amount, paid, name, description, id, expenseID} = req.body.billSplit
 
     if(validation.error) {
         console.log('Error', validation.error)
@@ -31,8 +31,8 @@ router.post("/", async (req, res) => {
     // check tripID exists
     
     // If it does then deconstruct the request and send into query 
-    await query(`INSERT INTO expenses (id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
-                                VALUES ("${id}", "${req.body.tripID}","${sharedID || null}","${category}","${description}","${date}","${Number(split)}","${amount.fromValue}","${amount.fromCurrency}","${amount.toValue}","${amount.toCurrency}")`)
+    await query(`INSERT INTO splits (id, expense_id, shared_id, name, description, date, paid, from_value, from_currency, to_value, to_currency) 
+                                VALUES ("${id}", "${expenseID}","${null}","${name}","${description}","${date}","${Number(paid)}","${amount.fromValue}","${amount.fromCurrency}","${amount.toValue}","${amount.toCurrency}")`)
 
 
     res.send({ status: 1 });
