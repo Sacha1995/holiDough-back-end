@@ -20,10 +20,15 @@ router.post("/login", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
   const { email, password } = req.body;
-  const results = await query(
-    `INSERT INTO users (email, hashed_password) VALUES ('${email}', '${password}')`
-  );
-  res.send({ results, status: 1 });
+  try {
+    const results = await query(
+      `INSERT INTO users (email, hashed_password) VALUES ('${email}', '${password}')`
+    );
+    res.send({ status: 1 });
+  } catch (e) {
+    console.log(e);
+    res.send({ status: 0 });
+  }
 });
 
 module.exports = router;
