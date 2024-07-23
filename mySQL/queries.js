@@ -44,8 +44,15 @@ const getSplitsFromIdExpenses = (id) => {
                 FROM splits WHERE expense_id LIKE ${id};`;
 };
 
+const getProfileFromUserId = (id) => {
+  return `SELECT username AS userName,
+            profile_picture_src AS profilePictureSrc
+                FROM profile WHERE user_id LIKE ${id};`;
+};
+
 module.exports = {
   getTripsFromIdUser,
   getExpensesFromIdTrip,
   getSplitsFromIdExpenses,
+  getProfileFromUserId,
 };
