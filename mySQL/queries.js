@@ -6,11 +6,12 @@ const getTripsFromIdUser = (id) => {
             budget_transport AS budgetTransport,
             budget_activities AS budgetActivities,
             budget_other AS budgetOther,
-            home_currency AS homeCurency,
+            home_currency AS homeCurrency,
             start_date AS startDate,
             end_date AS endDate,
             start_date_included AS startDateIncluded,
-            end_date_included AS endDateIncluded
+            end_date_included AS endDateIncluded,
+            destination
                 FROM trips WHERE user_id LIKE ${id};`;
 };
 
