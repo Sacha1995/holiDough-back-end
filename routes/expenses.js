@@ -11,7 +11,7 @@ router.post("/", async (req, res) => {
     
     // If it does then deconstruct the request and send into query 
     await query(`INSERT INTO expenses (id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
-                                VALUES ("${id}", "${req.body.tripID}","${sharedID}","${category}","${description}","${date}","${Number(split)}","${amount.fromValue}","${amount.fromCurrency}","${amount.toValue}","${amount.toCurrency}")`)
+                                VALUES ("${id}", "${req.body.tripID}","${sharedID || null}","${category}","${description}","${date}","${Number(split)}","${amount.fromValue}","${amount.fromCurrency}","${amount.toValue}","${amount.toCurrency}")`)
 
 });
 
