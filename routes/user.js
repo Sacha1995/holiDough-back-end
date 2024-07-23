@@ -22,12 +22,13 @@ router.post("/signup", async (req, res) => {
   const { email, password } = req.body;
   try {
     const results = await query(
-      `INSERT INTO users (email, hashed_password) VALUES ('${email}', '${password}')`
+      `INSERT INTO users (email, hashed_password) 
+        VALUES ('${email}', '${password}')`
     );
     res.send({ status: 1 });
   } catch (e) {
-    console.log(e);
-    res.send({ status: 0 });
+    if (e.code === "ER_DUP_ENTRY")
+      res.send({ status: 0, error: "User already exists" });
   }
 });
 
