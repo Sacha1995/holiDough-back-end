@@ -14,8 +14,10 @@ router.post("/login", async (req, res) => {
   if (results.length > 0) {
     res.send({ status: 1 });
   } else if (!email || !password) {
+    res.status(400);
     res.send({ status: 1, error: "Missing Username or Password" });
   } else {
+    res.status(400);
     res.send({ status: 0 });
   }
 });
@@ -29,8 +31,8 @@ router.post("/signup", async (req, res) => {
     );
     res.send({ status: 1 });
   } catch (e) {
-    if (e.code === "ER_DUP_ENTRY")
-      res.send({ status: 0, error: "User already exists" });
+    if (e.code === "ER_DUP_ENTRY") res.status(400);
+    res.send({ status: 0, error: "User already exists" });
   }
 });
 
