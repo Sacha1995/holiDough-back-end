@@ -50,15 +50,16 @@ const getProfileFromUserId = (id) => {
                 FROM profile WHERE user_id LIKE ${id};`;
 };
 
-// const deleteSingleExpense = (id) => {
-//   return `DELETE FROM expenses
-//               WHERE id LIKE ${id};`;
-// };
+const getHomeCurrencyFromTripId = (tripId) => {
+  return `SELECT home_currency
+              FROM trips 
+                  WHERE id LIKE ${tripId};`;
+};
 
 module.exports = {
   getTripsFromIdUser,
   getExpensesFromIdTrip,
   getSplitsFromIdExpenses,
   getProfileFromUserId,
-  deleteSingleExpense,
+  getHomeCurrencyFromTripId,
 };

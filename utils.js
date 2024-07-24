@@ -115,4 +115,13 @@ const getAndStructureData = async (id) => {
   return tripsComplete;
 };
 
-module.exports = { getAndStructureData };
+const withinThreeHours = (timestamp) => {
+  const currentTime = Date.now();
+  const timeDifference = currentTime - timestamp;
+  if (timeDifference > 10800) {
+    return false;
+  }
+  return true;
+};
+
+module.exports = { getAndStructureData, withinThreeHours };

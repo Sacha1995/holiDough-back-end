@@ -29,7 +29,6 @@ router.get("/:id", async (req, res) => {
     console.log(e);
     return res.status(400).send({
       status: 0,
-      message: e,
     });
   }
 
