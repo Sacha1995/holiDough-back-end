@@ -6,11 +6,12 @@ const getTripsFromIdUser = (id) => {
             budget_transport AS budgetTransport,
             budget_activities AS budgetActivities,
             budget_other AS budgetOther,
-            home_currency AS homeCurency,
+            home_currency AS homeCurrency,
             start_date AS startDate,
             end_date AS endDate,
             start_date_included AS startDateIncluded,
-            end_date_included AS endDateIncluded
+            end_date_included AS endDateIncluded,
+            destination
                 FROM trips WHERE user_id LIKE ${id};`;
 };
 
@@ -43,8 +44,21 @@ const getSplitsFromIdExpenses = (id) => {
                 FROM splits WHERE expense_id LIKE ${id};`;
 };
 
+const getProfileFromUserId = (id) => {
+  return `SELECT username AS userName,
+            profile_picture_src AS profilePictureSrc
+                FROM profile WHERE user_id LIKE ${id};`;
+};
+
+const deleteSingleExpense = (id) => {
+  return `DELETE FROM expenses 
+              WHERE id LIKE ${id};`;
+};
+
 module.exports = {
   getTripsFromIdUser,
   getExpensesFromIdTrip,
   getSplitsFromIdExpenses,
+  getProfileFromUserId,
+  deleteSingleExpense,
 };
