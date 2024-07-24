@@ -13,6 +13,7 @@ app.use("/splits", require("./routes/splits"));
 app.use("/trips", require("./routes/trips"));
 app.use("/profile", require("./routes/profile"));
 app.use("/onboarding", require("./routes/onboarding"));
+app.use("/goodbye", require("./routes/goodbye"));
 
 const port = process.env.PORT || 6001;
 app.listen(port, () => {
