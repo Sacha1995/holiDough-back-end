@@ -13,6 +13,8 @@ router.post("/login", async (req, res) => {
   );
   if (results.length > 0) {
     res.send({ status: 1 });
+  } else if (!email || !password) {
+    res.send({ status: 1, error: "Missing Username or Password" });
   } else {
     res.send({ status: 0 });
   }
