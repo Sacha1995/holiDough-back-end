@@ -24,24 +24,25 @@ router.post("/", async (req, res) => {
     req.body.expense;
 
   if (validation.error) {
-    console.log("Error", validation.error);
+    console.log("Error 2", validation.error);
     res.status(418).send(validation.error.details);
     return;
   }
 
-  await query(`INSERT INTO expenses (id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
+  const result= await query(`INSERT INTO expenses (id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
                                 VALUES ("${id}", "${req.body.tripID}","${
     sharedID || null
   }","${category}","${description}","${date}","${Number(split)}","${
     amount.fromValue
   }","${amount.fromCurrency}","${amount.toValue}","${amount.toCurrency}")`);
-
+ 
+  // console.log("ADD", result, Date.now())
   res.send({ status: 1 });
 });
 
 router.delete("/shared/:id", async (req, res) => {
   let id = req.params.id;
-  console.log(req, id, "INSIDE");
+  console.log(req, id, "INSIDE Shared");
   let result = await query(
     `DELETE FROM expenses WHERE expenses.shared_id = "${id}"`
   );

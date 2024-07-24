@@ -28,6 +28,8 @@ router.post("/", async (req, res) => {
           return
     }
 
+    console.log("Adding splits");
+
     // check tripID exists
     
     // If it does then deconstruct the request and send into query 
@@ -37,6 +39,14 @@ router.post("/", async (req, res) => {
 
     res.send({ status: 1 });
 });
+
+router.delete("/id/:id", async (req, res) => {
+    let id = req.params.id;
+    console.log(id, "INSIDE");
+    let result = await query(`DELETE FROM splits WHERE splits.expense_id = "${id}"`);
+    console.log(result, "YOOHOO");
+    res.send({ status: 1 });
+  });
 
 
 
