@@ -1,5 +1,6 @@
 const express = require("express");
 const query = require("../mySQL/connection");
+const { genToken } = require("../utils");
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
@@ -20,6 +21,8 @@ router.post("/login", async (req, res) => {
     res.status(400);
     res.send({ status: 0 });
   }
+
+  console.log(genToken());
 });
 
 router.post("/signup", async (req, res) => {
