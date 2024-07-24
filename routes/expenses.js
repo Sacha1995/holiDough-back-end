@@ -30,8 +30,8 @@ router.post("/", async (req, res) => {
   }
 
   const result =
-    await query(`INSERT INTO expenses (id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
-                                VALUES ("${id}", "${req.body.tripID}","${
+    await query(`INSERT INTO expenses (id, expense_id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
+                                VALUES ("", "${id}", "${req.body.tripID}","${
       sharedId || null
     }","${category}","${description}","${date}","${Number(split)}","${
       amount.fromValue
@@ -54,7 +54,9 @@ router.delete("/shared/:id", async (req, res) => {
 router.delete("/id/:id", async (req, res) => {
   let id = req.params.id;
   console.log(id, "INSIDE");
-  let result = await query(`DELETE FROM expenses WHERE expenses.id = "${id}"`);
+  let result = await query(
+    `DELETE FROM expenses WHERE expenses.expense_id = "${id}"`
+  );
   console.log(result, "YOOHOO");
   res.send({ status: 1 });
 });
