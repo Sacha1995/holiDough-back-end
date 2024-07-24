@@ -15,12 +15,12 @@ const schema = Joi.object({
   category: Joi.string().required(),
   description: Joi.string().required(),
   id: Joi.string().required(),
-  sharedID: Joi.string(),
+  sharedId: Joi.string(),
 });
 
 router.post("/", async (req, res) => {
   const validation = schema.validate(req.body.expense, { abortEarly: false });
-  const { date, amount, split, category, description, id, sharedID } =
+  const { date, amount, split, category, description, id, sharedId } =
     req.body.expense;
 
   if (validation.error) {
@@ -29,13 +29,14 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  const result= await query(`INSERT INTO expenses (id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
+  const result =
+    await query(`INSERT INTO expenses (id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
                                 VALUES ("${id}", "${req.body.tripID}","${
-    sharedID || null
-  }","${category}","${description}","${date}","${Number(split)}","${
-    amount.fromValue
-  }","${amount.fromCurrency}","${amount.toValue}","${amount.toCurrency}")`);
- 
+      sharedId || null
+    }","${category}","${description}","${date}","${Number(split)}","${
+      amount.fromValue
+    }","${amount.fromCurrency}","${amount.toValue}","${amount.toCurrency}")`);
+
   // console.log("ADD", result, Date.now())
   res.send({ status: 1 });
 });
