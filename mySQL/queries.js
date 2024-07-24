@@ -55,10 +55,16 @@ const deleteSingleExpense = (id) => {
               WHERE id LIKE ${id};`;
 };
 
+const addProfile = (userID, userName, profilePictureSrc) => {
+    return `INSERT INTO profile (user_id, username, profile_picture_src) 
+              VALUES ("${userID}","${userName}","${profilePictureSrc}")`
+}
+
 module.exports = {
   getTripsFromIdUser,
   getExpensesFromIdTrip,
   getSplitsFromIdExpenses,
   getProfileFromUserId,
   // deleteSingleExpense,
+  addProfile
 };
