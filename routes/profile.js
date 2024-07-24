@@ -37,4 +37,9 @@ router.get("/:id", async (req, res) => {
   res.send(profile[0]);
 });
 
+router.post('/', (req,res)=> {
+  console.log("req received",req.body.userID, req.body.userName, req.body.profilePictureSrc)
+
+})
+
 module.exports = router;
