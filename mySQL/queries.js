@@ -60,5 +60,4 @@ module.exports = {
   getExpensesFromIdTrip,
   getSplitsFromIdExpenses,
   getProfileFromUserId,
-  deleteSingleExpense,
 };
