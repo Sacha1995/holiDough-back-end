@@ -35,7 +35,6 @@ const getSplitsFromIdExpenses = (id) => {
             date,
             paid,
             name,
-            shared_id AS sharedId,
             expense_id AS expenseId,
             from_value AS fromValue,
             from_currency AS fromCurrency,
