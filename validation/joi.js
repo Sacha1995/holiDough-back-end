@@ -26,4 +26,11 @@ const tripSchema = joi.object({
   budgetOther: joi.number().min(0).max(joi.ref("budgetTotal")).required(),
 });
 
-module.exports = {userSchema, tripSchema}
+const profileSchema = joi.object({
+  userID: joi.string().required(), //change to number later?
+  userName:joi.string().min(3).max(15).required(),
+  profilePictureSrc:joi.string().required()
+  
+})
+
+module.exports = {userSchema, tripSchema, profileSchema}

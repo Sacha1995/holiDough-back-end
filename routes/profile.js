@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { getProfileFromUserId, addProfile } = require("../mySQL/queries");
 const query = require("../mySQL/connection");
+const { profileSchema } = require("../validation/joi");
+const joi = require("joi");
+
 
 // get profile info
 router.get("/:id", async (req, res) => {
@@ -38,6 +41,13 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  const validateProfile = profileSchema.validate(req.body, { abortEarly: false });
+
+  if (validateProfile.error) {
+    res.send("Profile info does not match the expected format.");
+    return;
+  }
+
   const { userID, userName, profilePictureSrc } = req.body;
 
   if (!userID || !userName || !profilePictureSrc) {
