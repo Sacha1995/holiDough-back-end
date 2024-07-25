@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getProfileFromUserId } = require("../mySQL/queries");
+const { getProfileFromUserId, addProfile } = require("../mySQL/queries");
 const query = require("../mySQL/connection");
 
 // get profile info
@@ -35,6 +35,28 @@ router.get("/:id", async (req, res) => {
   }
 
   res.send(profile[0]);
+});
+
+router.post("/", async (req, res) => {
+  const { userID, userName, profilePictureSrc } = req.body;
+
+  if (!userID || !userName || !profilePictureSrc) {
+    res.status(400).send("Profile data not received fully");
+    return;
+  }
+  try {
+    const result = await query(addProfile(userID, userName, profilePictureSrc));
+
+    if (!result.affectedRows) {
+      throw new Error("failed to send data to store");
+    } else {
+      res.status(200).send("profile added successfully");
+      return;
+    }
+  } catch (e) {
+    res.status(400).send("Could not send profile to db");
+    return;
+  }
 });
 
 module.exports = router;

@@ -13,8 +13,7 @@ router.post("/", async (req, res) => {
   }
   try {
     const result = await query(addTrip(trip));
-    console.log(addTrip(trip))
-    console.log(result);
+
     if (!result.affectedRows) {
       throw new Error("failed to send data to store");
     } else {
