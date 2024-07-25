@@ -1,7 +1,7 @@
 const express = require("express");
 const query = require("../mySQL/connection");
 const router = express.Router();
-const { addTrip } = require("../mySQL/onboardingQueries");
+const { addTrip } = require("../mySQL/queries");
 const { tripSchema } = require("../validation/joi");
 const joi = require("joi");
 
