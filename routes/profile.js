@@ -5,7 +5,6 @@ const query = require("../mySQL/connection");
 const { profileSchema } = require("../validation/joi");
 const joi = require("joi");
 
-
 // get profile info
 router.get("/:id", async (req, res) => {
   req.params.id = 1;
@@ -41,7 +40,9 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const validateProfile = profileSchema.validate(req.body, { abortEarly: false });
+  const validateProfile = profileSchema.validate(req.body, {
+    abortEarly: false,
+  });
 
   if (validateProfile.error) {
     res.send("Profile info does not match the expected format.");
@@ -49,13 +50,14 @@ router.post("/", async (req, res) => {
   }
 
   const { userID, userName, profilePictureSrc } = req.body;
+  const params = [userID, userName, profilePictureSrc];
 
   if (!userID || !userName || !profilePictureSrc) {
     res.status(400).send("Profile data not received fully");
     return;
   }
   try {
-    const result = await query(addProfile(userID, userName, profilePictureSrc));
+    const result = await query(addProfile(), params); 
 
     if (!result.affectedRows) {
       throw new Error("failed to send data to store");
