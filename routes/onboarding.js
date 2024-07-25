@@ -5,15 +5,13 @@ const { addTrip } = require("../mySQL/onboardingQueries");
 const { tripSchema } = require("../validation/joi");
 const joi = require("joi");
 
-
 router.post("/", async (req, res) => {
   const trip = req.body._onboardingDetails.details;
-
+  
   if (!trip) {
     res.status(400).send("No trip received");
     return;
   }
-
   const validateTrip = tripSchema.validate(trip, { abortEarly: false });
 
   if (validateTrip.error) {
@@ -21,8 +19,37 @@ router.post("/", async (req, res) => {
     return;
   }
 
+  const {
+    //   userId = // using hardcoded atm
+    budgetTotal,
+    budgetHotel,
+    budgetFood,
+    budgetTransport,
+    budgetActivities,
+    budgetOther,
+    homeCurrency,
+    destination,
+    dates: { startDate, endDate, startDateIncluded, endDateIncluded },
+  } = trip;
+
+  const params = [
+    budgetTotal,
+    budgetHotel,
+    budgetFood,
+    budgetTransport,
+    budgetActivities,
+    budgetOther,
+    homeCurrency,
+    destination,
+    startDate,
+    endDate,
+    startDateIncluded,
+    endDateIncluded,
+  ];
+
   try {
-    const result = await query(addTrip(trip));
+    console.log(addTrip(trip), params)
+    const result = await query(addTrip(), params);
 
     if (!result.affectedRows) {
       throw new Error("failed to send data to store");
@@ -31,7 +58,7 @@ router.post("/", async (req, res) => {
       return;
     }
   } catch (e) {
-    // console.log(e)
+    console.log(e)
     res.status(400).send("Could not send trip to db");
     return;
   }
