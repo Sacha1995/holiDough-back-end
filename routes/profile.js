@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { getAndStructureData } = require("../utils");
+const { getProfileFromUserId } = require("../mySQL/queries");
+const query = require("../mySQL/connection");
 
-// get trip info
+// get profile info
 router.get("/:id", async (req, res) => {
   req.params.id = 1;
   const id = Number(req.params.id);
@@ -24,7 +25,7 @@ router.get("/:id", async (req, res) => {
 
   //get and structure the data
   try {
-    tripsComplete = await getAndStructureData(id);
+    profile = await query(getProfileFromUserId(id));
   } catch (e) {
     console.log(e);
     return res.status(400).send({
@@ -33,7 +34,7 @@ router.get("/:id", async (req, res) => {
     });
   }
 
-  res.send(tripsComplete);
+  res.send(profile[0]);
 });
 
 module.exports = router;
