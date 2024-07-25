@@ -34,6 +34,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
+  console.log("Here");
   const { email, password } = req.body;
   try {
     const hashed_password = sha256(process.env.SALT + password);
@@ -41,6 +42,7 @@ router.post("/signup", async (req, res) => {
       `INSERT INTO users (email, hashed_password) 
         VALUES ('${email}', '${hashed_password}')`
     );
+    console.log(results);
     res.send({ status: 1 });
   } catch (e) {
     if (e.code === "ER_DUP_ENTRY") {
