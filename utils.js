@@ -1,3 +1,7 @@
+function genToken() {
+  return Math.round(Math.random() * 999999999999) + "" + Date.now();
+}
+
 const {
   getTripsFromIdUser,
   getExpensesFromIdTrip,
@@ -124,4 +128,4 @@ const withinThreeHours = (timestamp) => {
   return true;
 };
 
-module.exports = { getAndStructureData, withinThreeHours };
+module.exports = { getAndStructureData, withinThreeHours, genToken };
