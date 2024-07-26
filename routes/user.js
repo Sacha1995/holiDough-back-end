@@ -5,6 +5,7 @@ const sha256 = require("sha256");
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
+  console.log("HELLO WORLD");
   const { email, password } = req.body;
   const hashed_password = sha256(process.env.SALT + password);
   const results = await query(
