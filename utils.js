@@ -1,8 +1,6 @@
-
 function genToken() {
   return Math.round(Math.random() * 999999999999) + "" + Date.now();
 }
-module.exports = { genToken };
 
 const {
   getTripsFromIdUser,
@@ -13,7 +11,7 @@ const query = require("./mySQL/connection");
 
 const getAndStructureData = async (id) => {
   // Get the trips info from the user_id
-  const flatTrips = await query(getTripsFromIdUser(id));
+  const flatTrips = await query(getTripsFromIdUser(), [id]);
 
   // Check if there are no trips
   if (!flatTrips || flatTrips.length === 0) {
@@ -61,7 +59,9 @@ const getAndStructureData = async (id) => {
   // Get the expenses per trip from the trips_id
   const tripsWithExpenses = await Promise.all(
     trips.map(async (trip) => {
-      const expenses = await query(getExpensesFromIdTrip(trip.id));
+      const expenses = await query(getExpensesFromIdTrip(), [trip.id]);
+      console.log("expenses>>>>", expenses);
+
       if (!expenses) {
         return { ...trip, expenses: [] };
       }
@@ -94,7 +94,9 @@ const getAndStructureData = async (id) => {
 
       // Go through each expense and see if there is a split
       for (const expense of trip.expenses) {
-        const expenseSplits = await query(getSplitsFromIdExpenses(expense.id));
+        const expenseSplits = await query(getSplitsFromIdExpenses(), [
+          expense.id,
+        ]);
         if (!expenseSplits) {
           return;
         }
@@ -121,5 +123,13 @@ const getAndStructureData = async (id) => {
   return tripsComplete;
 };
 
-module.exports = { getAndStructureData };
+const withinThreeHours = (timestamp) => {
+  const currentTime = Date.now();
+  const timeDifference = currentTime - timestamp;
+  if (timeDifference > 10800) {
+    return false;
+  }
+  return true;
+};
 
+module.exports = { getAndStructureData, withinThreeHours, genToken };

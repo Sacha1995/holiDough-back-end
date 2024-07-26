@@ -14,11 +14,11 @@ router.post("/login", async (req, res) => {
           AND hashed_password 
             LIKE "${hashed_password}";`
   );
-  console.log(results);
+
   if (results.length > 0) {
     const token = genToken();
     await query(
-      `INSERT INTO tokens (user_id, token) VALUES ("${results.id}", "${token}")`
+      `INSERT INTO tokens (user_id, token) VALUES ("${results[0].id}", "${token}")`
     );
 
     res.send({ status: 1, token });
@@ -34,6 +34,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
+  console.log("Here");
   const { email, password } = req.body;
   try {
     const hashed_password = sha256(process.env.SALT + password);
@@ -41,6 +42,7 @@ router.post("/signup", async (req, res) => {
       `INSERT INTO users (email, hashed_password) 
         VALUES ('${email}', '${hashed_password}')`
     );
+    console.log(results);
     res.send({ status: 1 });
   } catch (e) {
     if (e.code === "ER_DUP_ENTRY") {
