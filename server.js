@@ -12,6 +12,8 @@ async function checkToken(req, res, next) {
     [req.headers.token]
   );
 
+  console.log("tokenresults", results);
+
   if (results.length === 1) {
     req.userId = results[0].user_id;
     next();
@@ -27,7 +29,7 @@ app.use("/demo", require("./routes/demo"));
 app.use("/expenses", require("./routes/expenses"));
 app.use("/splits", require("./routes/splits"));
 app.use("/trips", checkToken, require("./routes/trips"));
-app.use("/profile", require("./routes/profile"));
+app.use("/profile", checkToken, require("./routes/profile"));
 app.use("/onboarding", require("./routes/onboarding"));
 app.use("/conversion", require("./routes/conversion"));
 

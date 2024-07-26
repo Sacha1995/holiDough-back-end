@@ -4,9 +4,8 @@ const { getProfileFromUserId } = require("../mySQL/queries");
 const query = require("../mySQL/connection");
 
 // get profile info
-router.get("/:id", async (req, res) => {
-  req.params.id = 1;
-  const id = Number(req.params.id);
+router.get("/", async (req, res) => {
+  const id = Number(req.userId);
 
   //do checks for user ID
   if (!id) {
@@ -25,12 +24,12 @@ router.get("/:id", async (req, res) => {
 
   //get and structure the data
   try {
-    profile = await query(getProfileFromUserId(id));
+    profile = await query(getProfileFromUserId(), [id]);
   } catch (e) {
     console.log(e);
     return res.status(400).send({
       status: 0,
-      message: e,
+      message: "could not find your profile",
     });
   }
 

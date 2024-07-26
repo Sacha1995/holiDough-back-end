@@ -29,14 +29,13 @@ router.get("/:tripId", async (req, res) => {
   //get the homecurrency
   let homeCurrency;
   try {
-    result = await query(getHomeCurrencyFromTripId(tripId));
+    result = await query(getHomeCurrencyFromTripId(), [tripId]);
     homeCurrency = result[0].home_currency;
   } catch (e) {
     console.log(e);
     return res.status(400).send({
       status: 0,
       message: "Could not get homeCurrency",
-      error: e,
     });
   }
 

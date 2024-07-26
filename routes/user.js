@@ -14,11 +14,11 @@ router.post("/login", async (req, res) => {
           AND hashed_password 
             LIKE "${hashed_password}";`
   );
-  console.log(results);
+
   if (results.length > 0) {
     const token = genToken();
     await query(
-      `INSERT INTO tokens (user_id, token) VALUES ("${results.id}", "${token}")`
+      `INSERT INTO tokens (user_id, token) VALUES ("${results[0].id}", "${token}")`
     );
 
     res.send({ status: 1, token });

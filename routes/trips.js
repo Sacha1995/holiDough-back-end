@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
     });
   }
 
-  res.send(tripsComplete);
+  res.send({ status: 1, tripsComplete });
 });
 
 module.exports = router;
