@@ -66,6 +66,7 @@ router.post("/", async (req, res) => {
       return;
     }
   } catch (e) {
+    console.log(e)
     res.status(400).send("Could not send profile to db");
     return;
   }
