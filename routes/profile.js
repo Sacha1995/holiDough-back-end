@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { getProfileFromUserId } = require("../mySQL/queries");
+const { getProfileFromUserId, addProfile } = require("../mySQL/queries");
 const query = require("../mySQL/connection");
+const { profileSchema } = require("../validation/joi");
+const joi = require("joi");
 
 // get profile info
 router.get("/", async (req, res) => {
@@ -34,6 +36,39 @@ router.get("/", async (req, res) => {
   }
 
   res.send(profile[0]);
+});
+
+router.post("/", async (req, res) => {
+  const validateProfile = profileSchema.validate(req.body, {
+    abortEarly: false,
+  });
+
+  if (validateProfile.error) {
+    res.send("Profile info does not match the expected format.");
+    return;
+  }
+
+  const { userID, userName, profilePictureSrc } = req.body;
+  const params = [userID, userName, profilePictureSrc];
+
+  if (!userID || !userName || !profilePictureSrc) {
+    res.status(400).send("Profile data not received fully");
+    return;
+  }
+  try {
+    const result = await query(addProfile(), params); 
+
+    if (!result.affectedRows) {
+      throw new Error("failed to send data to store");
+    } else {
+      res.status(200).send("profile added successfully");
+      return;
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(400).send("Could not send profile to db");
+    return;
+  }
 });
 
 module.exports = router;
