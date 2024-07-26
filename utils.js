@@ -15,7 +15,8 @@ const getAndStructureData = async (id) => {
 
   // Check if there are no trips
   if (!flatTrips || flatTrips.length === 0) {
-    throw new Error("There are no trips");
+    return [];
+    // throw new Error("There are no trips");
   }
 
   // Restructure the trips data

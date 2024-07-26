@@ -66,6 +66,11 @@ const addTrip = () => {
 `;
 };
 
+const addExpense = () => {
+  return `INSERT INTO expenses (trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+};
+
 module.exports = {
   getTripsFromIdUser,
   getExpensesFromIdTrip,
@@ -75,4 +80,5 @@ module.exports = {
   // deleteSingleExpense,
   addProfile,
   addTrip,
+  addExpense,
 };
