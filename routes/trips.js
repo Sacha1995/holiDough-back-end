@@ -24,16 +24,15 @@ router.get("/", async (req, res) => {
 
   //get and structure the data
   try {
-    tripsComplete = await getAndStructureData(id);
+    const tripsComplete = await getAndStructureData(id);
+    res.send({ status: 1, tripsComplete });
   } catch (e) {
     console.log(e);
     return res.status(400).send({
       status: 0,
-      message: e, //is this allowed?
+      message: "Something has gone wrong retrieving the trips",
     });
   }
-
-  res.send({ status: 1, tripsComplete });
 });
 
 module.exports = router;

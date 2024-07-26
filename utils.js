@@ -16,7 +16,6 @@ const getAndStructureData = async (id) => {
   // Check if there are no trips
   if (!flatTrips || flatTrips.length === 0) {
     return [];
-    // throw new Error("There are no trips");
   }
 
   // Restructure the trips data
@@ -61,7 +60,6 @@ const getAndStructureData = async (id) => {
   const tripsWithExpenses = await Promise.all(
     trips.map(async (trip) => {
       const expenses = await query(getExpensesFromIdTrip(), [trip.id]);
-      console.log("expenses>>>>", expenses);
 
       if (!expenses) {
         return { ...trip, expenses: [] };
