@@ -2,6 +2,7 @@ const express = require("express");
 const query = require("../mySQL/connection");
 const router = express.Router();
 const Joi = require("joi");
+const { addSplit } = require("../mySQL/queries");
 
 const schema = Joi.object({
   date: Joi.number().required(),
@@ -15,13 +16,15 @@ const schema = Joi.object({
   name: Joi.string().required(),
   description: Joi.string().required(),
   id: Joi.string().required(),
-  expenseID: Joi.string(),
+  expenseId: Joi.string().required(),
+  sharedId: Joi.string().allow(null),
 });
 
 router.post("/", async (req, res) => {
   const validation = schema.validate(req.body.billSplit, { abortEarly: false });
-  const { date, amount, paid, name, description, id, expenseID } =
+  const { date, amount, paid, name, description, id, expenseId } =
     req.body.billSplit;
+  const { fromValue, fromCurrency, toValue, toCurrency } = amount;
 
   if (validation.error) {
     console.log("Error", validation.error);
@@ -31,15 +34,31 @@ router.post("/", async (req, res) => {
 
   console.log("Adding splits");
 
-  // check tripID exists
+  // check tripID exists, I don't think you need tripID.
 
   // If it does then deconstruct the request and send into query
-  await query(`INSERT INTO splits (id, id_split, expense_id, name, description, date, paid, from_value, from_currency, to_value, to_currency) 
-                                VALUES ("", "${id}", "${expenseID}","${name}","${description}","${date}","${Number(
-    paid
-  )}","${amount.fromValue}","${amount.fromCurrency}","${amount.toValue}","${
-    amount.toCurrency
-  }")`);
+  const params = [
+    id,
+    expenseId,
+    sharedId || "",
+    name,
+    description,
+    date,
+    Number(paid),
+    fromValue,
+    fromCurrency,
+    toValue,
+    toCurrency,
+  ];
+  try {
+    const result = await query(addSplit(), params);
+    console.log(result);
+  } catch (e) {
+    console.log(e);
+    res
+      .status(418)
+      .send({ status: 0, message: "could not put split in database" });
+  }
 
   res.send({ status: 1 });
 });

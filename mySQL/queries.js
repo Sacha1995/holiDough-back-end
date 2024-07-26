@@ -16,7 +16,8 @@ const getTripsFromIdUser = () => {
 };
 
 const getExpensesFromIdTrip = () => {
-  return `SELECT id,
+  return `SELECT 
+            expense_id AS id,
             category,
             description,
             date,
@@ -67,8 +68,13 @@ const addTrip = () => {
 };
 
 const addExpense = () => {
-  return `INSERT INTO expenses (trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+  return `INSERT INTO expenses (expense_id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+};
+
+const addSplit = () => {
+  return `INSERT INTO splits (id_split, expense_id, name, description, date, paid, from_value, from_currency, to_value, to_currency) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 };
 
 module.exports = {
@@ -81,4 +87,5 @@ module.exports = {
   addProfile,
   addTrip,
   addExpense,
+  addSplit,
 };

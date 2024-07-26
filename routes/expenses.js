@@ -12,6 +12,7 @@ const schema = Joi.object({
     fromCurrency: Joi.string().required(),
     toCurrency: Joi.string().required(),
   }),
+  id: Joi.string().required(),
   split: Joi.boolean().required(),
   category: Joi.string().required(),
   description: Joi.string().required(),
@@ -31,6 +32,7 @@ router.post("/", async (req, res) => {
 
   //create array of params to send to SQL
   const params = [
+    id,
     req.body.tripID,
     sharedId || "",
     category,
@@ -43,12 +45,8 @@ router.post("/", async (req, res) => {
     amount.toCurrency,
   ];
 
-  let expenseId;
-
   try {
-    const result = await query(addExpense(), params);
-    expenseId = result.insertId;
-    console.log(">>>>>", result.insertId);
+    await query(addExpense(), params);
   } catch (e) {
     console.log(e);
     return res.send({
@@ -57,8 +55,7 @@ router.post("/", async (req, res) => {
     });
   }
 
-  // console.log("ADD", result, Date.now())
-  res.send({ status: 1, expenseId: expenseId });
+  res.send({ status: 1 });
 });
 
 router.delete("/shared/:id", async (req, res) => {
