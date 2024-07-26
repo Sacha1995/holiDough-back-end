@@ -20,7 +20,6 @@ router.post("/", async (req, res) => {
   }
 
   const {
-    //   userId = // using hardcoded atm
     budgetTotal,
     budgetHotel,
     budgetFood,
@@ -33,6 +32,7 @@ router.post("/", async (req, res) => {
   } = trip;
 
   const params = [
+    req.userId,
     budgetTotal,
     budgetHotel,
     budgetFood,

@@ -23,14 +23,14 @@ async function checkToken(req, res, next) {
 }
 
 app.use(cors());
-app.use(express.json({ limit: '300kb' }));
+app.use(express.json({ limit: "300kb" }));
 app.use("/user", require("./routes/user"));
 app.use("/demo", require("./routes/demo"));
 app.use("/expenses", require("./routes/expenses"));
 app.use("/splits", require("./routes/splits"));
 app.use("/trips", checkToken, require("./routes/trips"));
 app.use("/profile", checkToken, require("./routes/profile"));
-app.use("/onboarding", require("./routes/onboarding"));
+app.use("/onboarding", checkToken, require("./routes/onboarding"));
 app.use("/conversion", require("./routes/conversion"));
 
 const port = process.env.PORT || 6001;

@@ -48,8 +48,8 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  const { userID, userName, profilePictureSrc } = req.body;
-  const params = [userID, userName, profilePictureSrc];
+  const {userName, profilePictureSrc } = req.body;
+  const params = [req.userId, userName, profilePictureSrc];
 
   if (!userID || !userName || !profilePictureSrc) {
     res.status(400).send("Profile data not received fully");
