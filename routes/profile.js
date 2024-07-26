@@ -39,7 +39,6 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  console.log(">>>>");
   const validateProfile = profileSchema.validate(req.body, {
     abortEarly: false,
   });
@@ -52,19 +51,15 @@ router.post("/", async (req, res) => {
   const { userName, profilePictureSrc } = req.body;
   const params = [req.userId, userName, profilePictureSrc];
 
-  if (!userID || !userName || !profilePictureSrc) {
-    res.status(400).send("Profile data not received fully");
-    return;
-  }
   try {
     const result = await query(addProfile(), params);
-
-    if (!result.affectedRows) {
-      throw new Error("failed to send data to store");
-    } else {
-      res.status(200).send("profile added successfully");
-      return;
-    }
+    console.log(result);
+    // if (!result.affectedRows) {
+    //   throw new Error("failed to send data to store");
+    // } else {
+    //   res.status(200).send("profile added successfully");
+    //   return;
+    // }
   } catch (e) {
     console.log(e);
     res.status(400).send("Could not send profile to db");

@@ -1,7 +1,8 @@
 const joi = require("joi");
 
 const userSchema = {
-  email: joi.string()
+  email: joi
+    .string()
     .email({ tlds: { allow: false } })
     .required(),
   password: joi.string().min(8).required(),
@@ -27,10 +28,8 @@ const tripSchema = joi.object({
 });
 
 const profileSchema = joi.object({
-  userID: joi.string().required(), //change to number later?
-  userName:joi.string().min(3).max(15).required(),
-  profilePictureSrc:joi.string().required()
-  
-})
+  userName: joi.string().min(3).max(15).required(),
+  profilePictureSrc: joi.string().required(),
+});
 
-module.exports = {userSchema, tripSchema, profileSchema}
+module.exports = { userSchema, tripSchema, profileSchema };
