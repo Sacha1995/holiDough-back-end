@@ -2,6 +2,7 @@ const express = require("express");
 const query = require("../mySQL/connection");
 const router = express.Router();
 const Joi = require("joi");
+const { addExpense } = require("../mySQL/queries");
 
 const schema = Joi.object({
   date: Joi.number().required(),
@@ -14,8 +15,7 @@ const schema = Joi.object({
   split: Joi.boolean().required(),
   category: Joi.string().required(),
   description: Joi.string().required(),
-  id: Joi.string().required(),
-  sharedId: Joi.string(),
+  sharedId: Joi.string().allow(null),
 });
 
 router.post("/", async (req, res) => {
@@ -29,16 +29,36 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  const result =
-    await query(`INSERT INTO expenses (id, expense_id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
-                                VALUES ("", "${id}", "${req.body.tripID}","${
-      sharedId || null
-    }","${category}","${description}","${date}","${Number(split)}","${
-      amount.fromValue
-    }","${amount.fromCurrency}","${amount.toValue}","${amount.toCurrency}")`);
+  //create array of params to send to SQL
+  const params = [
+    req.body.tripID,
+    sharedId || "",
+    category,
+    description,
+    date,
+    Number(split),
+    amount.fromValue,
+    amount.fromCurrency,
+    amount.toValue,
+    amount.toCurrency,
+  ];
+
+  let expenseId;
+
+  try {
+    const result = await query(addExpense(), params);
+    expenseId = result.insertId;
+    console.log(">>>>>", result.insertId);
+  } catch (e) {
+    console.log(e);
+    return res.send({
+      status: 0,
+      message: "something went wrong with adding the expense",
+    });
+  }
 
   // console.log("ADD", result, Date.now())
-  res.send({ status: 1 });
+  res.send({ status: 1, expenseId: expenseId });
 });
 
 router.delete("/shared/:id", async (req, res) => {

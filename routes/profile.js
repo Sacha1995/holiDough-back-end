@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { getProfileFromUserId } = require("../mySQL/queries");
+const { getProfileFromUserId, addProfile } = require("../mySQL/queries");
 const query = require("../mySQL/connection");
+const { profileSchema } = require("../validation/joi");
+const joi = require("joi");
 
 // get profile info
-router.get("/:id", async (req, res) => {
-  req.params.id = 1;
-  const id = Number(req.params.id);
+router.get("/", async (req, res) => {
+  const id = Number(req.userId);
 
   //do checks for user ID
   if (!id) {
@@ -25,16 +26,45 @@ router.get("/:id", async (req, res) => {
 
   //get and structure the data
   try {
-    profile = await query(getProfileFromUserId(id));
+    profile = await query(getProfileFromUserId(), [id]);
   } catch (e) {
     console.log(e);
     return res.status(400).send({
       status: 0,
-      message: e,
+      message: "could not find your profile",
     });
   }
 
   res.send(profile[0]);
+});
+
+router.post("/", async (req, res) => {
+  const validateProfile = profileSchema.validate(req.body, {
+    abortEarly: false,
+  });
+
+  if (validateProfile.error) {
+    res.send("Profile info does not match the expected format.");
+    return;
+  }
+
+  const { userName, profilePictureSrc } = req.body;
+  const params = [req.userId, userName, profilePictureSrc];
+
+  try {
+    const result = await query(addProfile(), params);
+    console.log(result);
+    // if (!result.affectedRows) {
+    //   throw new Error("failed to send data to store");
+    // } else {
+    //   res.status(200).send("profile added successfully");
+    //   return;
+    // }
+  } catch (e) {
+    console.log(e);
+    res.status(400).send("Could not send profile to db");
+    return;
+  }
 });
 
 module.exports = router;

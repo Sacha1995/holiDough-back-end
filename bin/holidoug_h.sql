@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 22, 2024 at 12:59 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost:3306
+-- Generation Time: Jul 26, 2024 at 05:07 PM
+-- Server version: 10.6.18-MariaDB-cll-lve
+-- PHP Version: 8.3.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `travel_tally`
+-- Database: `holidoug_h`
 --
 
 -- --------------------------------------------------------
@@ -29,8 +29,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `expenses` (
   `id` int(11) NOT NULL,
-  `trip_id` int(11) NOT NULL,
-  `shared_id` int(11) NOT NULL,
+  `expense_id` varchar(32) NOT NULL,
+  `trip_id` varchar(32) NOT NULL,
+  `shared_id` varchar(32) NOT NULL,
   `category` varchar(10) NOT NULL,
   `description` varchar(58) NOT NULL,
   `date` bigint(20) NOT NULL,
@@ -64,8 +65,8 @@ CREATE TABLE `profile` (
 
 CREATE TABLE `splits` (
   `id` int(11) NOT NULL,
-  `expense_id` int(11) NOT NULL,
-  `shared_id` int(11) NOT NULL,
+  `id_split` varchar(32) NOT NULL,
+  `expense_id` varchar(32) NOT NULL,
   `name` varchar(32) NOT NULL,
   `description` varchar(32) NOT NULL,
   `date` bigint(20) NOT NULL,
@@ -97,6 +98,8 @@ CREATE TABLE `tokens` (
 
 CREATE TABLE `trips` (
   `id` int(11) NOT NULL,
+  `trip_id` varchar(32) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `entry_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `budget_total` int(11) NOT NULL,
   `budget_hotel` int(11) NOT NULL,
@@ -163,7 +166,8 @@ ALTER TABLE `trips`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
