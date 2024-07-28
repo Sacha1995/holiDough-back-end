@@ -38,6 +38,7 @@ app.use("/trips", checkToken, require("./routes/trips"));
 app.use("/profile", checkToken, require("./routes/profile"));
 app.use("/onboarding", checkToken, require("./routes/onboarding"));
 app.use("/conversion", require("./routes/conversion"));
+app.use("/goodbye", require("./routes/goodbye"));
 
 const port = process.env.PORT || 6001;
 app.listen(port, () => {
