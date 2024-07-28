@@ -37,6 +37,7 @@ const getSplitsFromIdExpenses = () => {
             paid,
             name,
             expense_id AS expenseId,
+            shared_id AS sharedId,
             from_value AS fromValue,
             from_currency AS fromCurrency,
             to_value AS toValue,
@@ -73,8 +74,24 @@ const addExpense = () => {
 };
 
 const addSplit = () => {
-  return `INSERT INTO splits (id_split, expense_id, name, description, date, paid, from_value, from_currency, to_value, to_currency) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  return `INSERT INTO splits (split_id, expense_id, shared_id, name, description, date, paid, from_value, from_currency, to_value, to_currency) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+};
+
+const deleteMultiExpense = () => {
+  return `DELETE FROM expenses WHERE shared_id = ?;`;
+};
+
+const deleteSingleExpense = () => {
+  return `DELETE FROM expenses WHERE expense_id = ?;`;
+};
+
+const deleteMultiSplits = () => {
+  return `DELETE FROM splits WHERE shared_id = ?;`;
+};
+
+const deleteSingleSplits = () => {
+  return `DELETE FROM splits WHERE expense_id = ?;`;
 };
 
 module.exports = {
@@ -83,7 +100,10 @@ module.exports = {
   getSplitsFromIdExpenses,
   getProfileFromUserId,
   getHomeCurrencyFromTripId,
-  // deleteSingleExpense,
+  deleteSingleExpense,
+  deleteMultiExpense,
+  deleteMultiSplits,
+  deleteSingleSplits,
   addProfile,
   addTrip,
   addExpense,

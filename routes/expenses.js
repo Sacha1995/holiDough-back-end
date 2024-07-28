@@ -2,7 +2,11 @@ const express = require("express");
 const query = require("../mySQL/connection");
 const router = express.Router();
 const Joi = require("joi");
-const { addExpense } = require("../mySQL/queries");
+const {
+  addExpense,
+  deleteMultiExpense,
+  deleteSingleExpense,
+} = require("../mySQL/queries");
 
 const schema = Joi.object({
   date: Joi.number().required(),
@@ -60,22 +64,60 @@ router.post("/", async (req, res) => {
 
 router.delete("/shared/:id", async (req, res) => {
   let id = req.params.id;
-  console.log(req, id, "INSIDE Shared");
-  let result = await query(
-    `DELETE FROM expenses WHERE expenses.shared_id = "${id}"`
-  );
-  console.log(result, "YOOHOO");
-  res.send({ status: 1 });
+  // need to add checks for sharedid
+  console.log(id, "INSIDE");
+
+  try {
+    let result = await query(deleteMultiExpense(), [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send({
+        status: 0,
+        message: `Expenses with shared_id ${id} not found`,
+      });
+    }
+
+    console.log(
+      `Deleted ${result.affectedRows} expenses with shared_id: ${id}`
+    );
+    res.send({ status: 1, message: `Deleted ${result.affectedRows} expenses` });
+  } catch (error) {
+    console.error(`Error deleting expenses with shared_id: ${id}`, error);
+    res.status(400).send({
+      status: 0,
+      message: "Failed to delete expenses",
+    });
+  }
 });
 
-router.delete("/id/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   let id = req.params.id;
+  // need to add checks for id
   console.log(id, "INSIDE");
-  let result = await query(
-    `DELETE FROM expenses WHERE expenses.expense_id = "${id}"`
-  );
-  console.log(result, "YOOHOO");
-  res.send({ status: 1 });
+
+  try {
+    const result = await query(deleteSingleExpense(), [id]);
+
+    console.log(result);
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .send({ status: 0, message: `Expense with id ${id} not found` });
+    }
+
+    console.log(`Deleted expense with id: ${id}`);
+    res.send({
+      status: 1,
+      message: `Delete successful`,
+    });
+  } catch (error) {
+    console.error(`Error deleting expense with id: ${id}`, error);
+    res.status(500).send({
+      status: 0,
+      message: "Failed to delete expense",
+    });
+  }
 });
 
 module.exports = router;

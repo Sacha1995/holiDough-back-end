@@ -2,7 +2,11 @@ const express = require("express");
 const query = require("../mySQL/connection");
 const router = express.Router();
 const Joi = require("joi");
-const { addSplit } = require("../mySQL/queries");
+const {
+  addSplit,
+  deleteMultiSplits,
+  deleteSingleSplits,
+} = require("../mySQL/queries");
 
 const schema = Joi.object({
   date: Joi.number().required(),
@@ -22,7 +26,7 @@ const schema = Joi.object({
 
 router.post("/", async (req, res) => {
   const validation = schema.validate(req.body.billSplit, { abortEarly: false });
-  const { date, amount, paid, name, description, id, expenseId } =
+  const { date, amount, paid, name, description, id, expenseId, sharedId } =
     req.body.billSplit;
   const { fromValue, fromCurrency, toValue, toCurrency } = amount;
 
@@ -63,14 +67,58 @@ router.post("/", async (req, res) => {
   res.send({ status: 1 });
 });
 
-router.delete("/id/:id", async (req, res) => {
+router.delete("/shared/:id", async (req, res) => {
   let id = req.params.id;
+  // need to add checks for sharedid
   console.log(id, "INSIDE");
-  let result = await query(
-    `DELETE FROM splits WHERE splits.expense_id = "${id}"`
-  );
-  console.log(result, "YOOHOO");
-  res.send({ status: 1 });
+
+  try {
+    let result = await query(deleteMultiSplits(), [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send({
+        status: 0,
+        message: `splits with shared_id ${id} not found`,
+      });
+    }
+
+    console.log(`Deleted ${result.affectedRows} splits with shared_id: ${id}`);
+    res.send({ status: 1, message: `Deleted ${result.affectedRows} splits` });
+  } catch (error) {
+    console.error(`Error deleting splits with shared_id: ${id}`, error);
+    res.status(400).send({
+      status: 0,
+      message: "Failed to delete splits",
+    });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  let id = req.params.id;
+  // need to add checks for id
+  console.log(id, "INSIDE");
+
+  try {
+    const result = await query(deleteSingleSplits(), [id]);
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .send({ status: 0, message: `Split with id ${id} not found` });
+    }
+
+    console.log(`Deleted split with id: ${id}`);
+    res.send({
+      status: 1,
+      message: `Delete successful`,
+    });
+  } catch (error) {
+    console.error(`Error deleting split with id: ${id}`, error);
+    res.status(500).send({
+      status: 0,
+      message: "Failed to delete split",
+    });
+  }
 });
 
 module.exports = router;
