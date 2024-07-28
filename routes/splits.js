@@ -34,8 +34,8 @@ router.post("/", async (req, res) => {
   // check tripID exists
 
   // If it does then deconstruct the request and send into query
-  await query(`INSERT INTO splits (id, id_split, expense_id, name, description, date, paid, from_value, from_currency, to_value, to_currency) 
-                                VALUES ("", "${id}", "${expenseID}","${name}","${description}","${date}","${Number(
+  await query(`INSERT INTO splits (id, expense_id, shared_id, name, description, date, paid, from_value, from_currency, to_value, to_currency) 
+                                VALUES ("${id}", "${expenseID}","${null}","${name}","${description}","${date}","${Number(
     paid
   )}","${amount.fromValue}","${amount.fromCurrency}","${amount.toValue}","${
     amount.toCurrency

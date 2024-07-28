@@ -67,8 +67,25 @@ const addTrip = () => {
 };
 
 const addExpense = () => {
-  return `INSERT INTO expenses (trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+  return `INSERT INTO expenses (expense_id, trip_id, shared_id, category, description, date, split, from_value, from_currency, to_value, to_currency) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+};
+
+const deleteMultidayExpense = () => {
+  return `DELETE FROM expenses WHERE expenses.shared_id = ?`;
+};
+
+const deleteSingleExpense = () => {
+  return `DELETE FROM expenses WHERE expenses.expense_id = ?`;
+};
+
+const addSplit = () => {
+  return `INSERT INTO splits (id, id_split, expense_id, name, description, date, paid, from_value, from_currency, to_value, to_currency) 
+                                VALUES ("", "${id}", "${expenseID}","${name}","${description}","${date}","${Number(
+    paid
+  )}","${amount.fromValue}","${amount.fromCurrency}","${amount.toValue}","${
+    amount.toCurrency
+  }")`;
 };
 
 module.exports = {
@@ -81,4 +98,6 @@ module.exports = {
   addProfile,
   addTrip,
   addExpense,
+  deleteMultidayExpense,
+  deleteSingleExpense,
 };

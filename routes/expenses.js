@@ -2,7 +2,11 @@ const express = require("express");
 const query = require("../mySQL/connection");
 const router = express.Router();
 const Joi = require("joi");
-const { addExpense } = require("../mySQL/queries");
+const {
+  addExpense,
+  deleteMultidayExpense,
+  deleteSingleExpense,
+} = require("../mySQL/queries");
 
 const schema = Joi.object({
   date: Joi.number().required(),
@@ -16,6 +20,7 @@ const schema = Joi.object({
   category: Joi.string().required(),
   description: Joi.string().required(),
   sharedId: Joi.string().allow(null),
+  id: Joi.string().required(),
 });
 
 router.post("/", async (req, res) => {
@@ -31,6 +36,7 @@ router.post("/", async (req, res) => {
 
   //create array of params to send to SQL
   const params = [
+    id,
     req.body.tripID,
     sharedId || "",
     category,
@@ -64,9 +70,7 @@ router.post("/", async (req, res) => {
 router.delete("/shared/:id", async (req, res) => {
   let id = req.params.id;
   console.log(req, id, "INSIDE Shared");
-  let result = await query(
-    `DELETE FROM expenses WHERE expenses.shared_id = "${id}"`
-  );
+  let result = await query(deleteMultidayExpense(), [id]);
   console.log(result, "YOOHOO");
   res.send({ status: 1 });
 });
@@ -74,9 +78,7 @@ router.delete("/shared/:id", async (req, res) => {
 router.delete("/id/:id", async (req, res) => {
   let id = req.params.id;
   console.log(id, "INSIDE");
-  let result = await query(
-    `DELETE FROM expenses WHERE expenses.expense_id = "${id}"`
-  );
+  let result = await query(deleteSingleExpense(), [id]);
   console.log(result, "YOOHOO");
   res.send({ status: 1 });
 });
