@@ -6,6 +6,8 @@ const {
   addSplit,
   deleteMultiSplits,
   deleteSingleSplits,
+  makePaidTrue,
+  makePaidMulitTrue,
 } = require("../mySQL/queries");
 
 const schema = Joi.object({
@@ -114,10 +116,62 @@ router.delete("/:id", async (req, res) => {
     });
   } catch (error) {
     console.error(`Error deleting split with id: ${id}`, error);
-    res.status(500).send({
+    res.status(400).send({
       status: 0,
       message: "Failed to delete split",
     });
+  }
+});
+
+router.patch("/paid/:id/:name", async (req, res) => {
+  const id = req.params.id;
+  const name = req.params.name;
+
+  if (id.includes("shared")) {
+    try {
+      const result = await query(makePaidMulitTrue(), [id, name]);
+      if (result.affectedRows === 0) {
+        return res.status(404).send({
+          status: 0,
+          message: `Splits with sharedId ${id} and name ${name} not found`,
+        });
+      }
+      res.send({
+        status: 1,
+        message: `Splits changed to paid`,
+      });
+      return;
+    } catch (e) {
+      console.log(
+        `Error changing splits with sharedId: ${id} and name ${name}`,
+        e
+      );
+      res
+        .status(400)
+        .send({ status: 0, message: "Failed to turn paid into true" });
+      return;
+    }
+  }
+
+  try {
+    const result = await query(makePaidTrue(), [id, name]);
+    if (result.affectedRows === 0) {
+      return res.status(404).send({
+        status: 0,
+        message: `Split with id ${id} and name ${name} not found`,
+      });
+    }
+    res.send({
+      status: 1,
+      message: `Split changed to paid`,
+    });
+    return;
+  } catch (e) {
+    console.log(`Error changing split with id: ${id} and name ${name}`, e);
+    res
+      .status(400)
+      .send({ status: 0, message: "Failed to turn paid into true" });
+    return;
   }
 });
 

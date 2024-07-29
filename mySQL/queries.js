@@ -31,7 +31,8 @@ const getExpensesFromIdTrip = () => {
 };
 
 const getSplitsFromIdExpenses = () => {
-  return `SELECT id,
+  return `SELECT 
+            split_id AS id,
             description,
             date,
             paid,
@@ -79,19 +80,36 @@ const addSplit = () => {
 };
 
 const deleteMultiExpense = () => {
-  return `DELETE FROM expenses WHERE shared_id = ?;`;
+  return `DELETE FROM expenses 
+              WHERE shared_id = ?;`;
 };
 
 const deleteSingleExpense = () => {
-  return `DELETE FROM expenses WHERE expense_id = ?;`;
+  return `DELETE FROM expenses 
+              WHERE expense_id = ?;`;
 };
 
 const deleteMultiSplits = () => {
-  return `DELETE FROM splits WHERE shared_id = ?;`;
+  return `DELETE FROM splits 
+              WHERE shared_id = ?;`;
 };
 
 const deleteSingleSplits = () => {
-  return `DELETE FROM splits WHERE expense_id = ?;`;
+  return `DELETE FROM splits 
+              WHERE expense_id = ?;`;
+};
+
+const makePaidTrue = () => {
+  return `UPDATE splits 
+              SET paid = 1
+                  WHERE split_id = ?;`;
+};
+
+const makePaidMulitTrue = () => {
+  return `UPDATE splits 
+              SET paid = 1
+                  WHERE shared_id = ? 
+                      AND name = ?;`;
 };
 
 module.exports = {
@@ -108,4 +126,6 @@ module.exports = {
   addTrip,
   addExpense,
   addSplit,
+  makePaidTrue,
+  makePaidMulitTrue,
 };
