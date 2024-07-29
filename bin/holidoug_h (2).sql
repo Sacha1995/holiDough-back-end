@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 28, 2024 at 04:17 PM
+-- Generation Time: Jul 29, 2024 at 10:45 AM
 -- Server version: 10.6.18-MariaDB-cll-lve
 -- PHP Version: 8.3.8
 
@@ -65,7 +65,7 @@ CREATE TABLE `profile` (
 
 CREATE TABLE `splits` (
   `id` int(11) NOT NULL,
-  `split-id` varchar(32) NOT NULL,
+  `split_id` varchar(32) NOT NULL,
   `shared_id` varchar(32) NOT NULL,
   `expense_id` varchar(32) NOT NULL,
   `name` varchar(32) NOT NULL,
