@@ -66,7 +66,6 @@ router.post("/", async (req, res) => {
 router.delete("/shared/:id", async (req, res) => {
   let id = req.params.id;
   // need to add checks for sharedid
-  console.log(id, "INSIDE");
 
   try {
     let result = await query(deleteMultiExpense(), [id]);
