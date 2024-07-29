@@ -7,7 +7,8 @@ const joi = require("joi");
 
 router.post("/", async (req, res) => {
   const trip = req.body._onboardingDetails.details;
-  
+  const tripId = req.body._onboardingDetails.tripId;
+
   if (!trip) {
     res.status(400).send("No trip received");
     return;
@@ -20,19 +21,20 @@ router.post("/", async (req, res) => {
   }
 
   const {
-    budgetTotal,
-    budgetHotel,
-    budgetFood,
-    budgetTransport,
-    budgetActivities,
-    budgetOther,
-    homeCurrency,
-    destination,
-    dates: { startDate, endDate, startDateIncluded, endDateIncluded },
-  } = trip;
+      budgetTotal,
+      budgetHotel,
+      budgetFood,
+      budgetTransport,
+      budgetActivities,
+      budgetOther,
+      homeCurrency,
+      destination,
+      dates: { startDate, endDate, startDateIncluded, endDateIncluded },
+    }= trip;
 
   const params = [
     req.userId,
+    tripId,
     budgetTotal,
     budgetHotel,
     budgetFood,
@@ -48,7 +50,7 @@ router.post("/", async (req, res) => {
   ];
 
   try {
-    console.log(addTrip(trip), params)
+    console.log(addTrip(trip), params);
     const result = await query(addTrip(), params);
 
     if (!result.affectedRows) {
@@ -58,7 +60,7 @@ router.post("/", async (req, res) => {
       return;
     }
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(400).send("Could not send trip to db");
     return;
   }
