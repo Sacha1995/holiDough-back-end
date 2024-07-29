@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 26, 2024 at 05:07 PM
+-- Generation Time: Jul 28, 2024 at 04:17 PM
 -- Server version: 10.6.18-MariaDB-cll-lve
 -- PHP Version: 8.3.8
 
@@ -65,7 +65,8 @@ CREATE TABLE `profile` (
 
 CREATE TABLE `splits` (
   `id` int(11) NOT NULL,
-  `split_id` varchar(32) NOT NULL,
+  `split-id` varchar(32) NOT NULL,
+  `shared_id` varchar(32) NOT NULL,
   `expense_id` varchar(32) NOT NULL,
   `name` varchar(32) NOT NULL,
   `description` varchar(32) NOT NULL,
@@ -74,7 +75,8 @@ CREATE TABLE `splits` (
   `from_value` int(11) NOT NULL,
   `from_currency` varchar(3) NOT NULL,
   `to_value` int(11) NOT NULL,
-  `to_currency` varchar(3) NOT NULL
+  `to_currency` varchar(3) NOT NULL,
+  `entry_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

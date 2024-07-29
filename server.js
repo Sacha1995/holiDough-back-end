@@ -6,7 +6,7 @@ const query = require("./mySQL/connection");
 const app = express();
 
 function request(req, res, next) {
-  console.log(req.headers, req.body);
+  // console.log(req.headers, req.body);
   next();
 }
 
@@ -17,7 +17,7 @@ async function checkToken(req, res, next) {
     [req.headers.token]
   );
 
-  console.log("userID from checkToken", results[0].user_id);
+  // console.log("userID from checkToken", results[0].user_id);
 
   if (results.length === 1) {
     req.userId = results[0].user_id;

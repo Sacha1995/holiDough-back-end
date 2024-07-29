@@ -16,7 +16,8 @@ const getTripsFromIdUser = () => {
 };
 
 const getExpensesFromIdTrip = () => {
-  return `SELECT id,
+  return `SELECT 
+            expense_id AS id,
             category,
             description,
             date,
@@ -30,12 +31,14 @@ const getExpensesFromIdTrip = () => {
 };
 
 const getSplitsFromIdExpenses = () => {
-  return `SELECT id,
+  return `SELECT 
+            split_id AS id,
             description,
             date,
             paid,
             name,
             expense_id AS expenseId,
+            shared_id AS sharedId,
             from_value AS fromValue,
             from_currency AS fromCurrency,
             to_value AS toValue,
@@ -71,21 +74,42 @@ const addExpense = () => {
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 };
 
-const deleteMultidayExpense = () => {
-  return `DELETE FROM expenses WHERE expenses.shared_id = ?`;
+const addSplit = () => {
+  return `INSERT INTO splits (split_id, expense_id, shared_id, name, description, date, paid, from_value, from_currency, to_value, to_currency) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+};
+
+const deleteMultiExpense = () => {
+  return `DELETE FROM expenses 
+              WHERE shared_id = ?;`;
 };
 
 const deleteSingleExpense = () => {
-  return `DELETE FROM expenses WHERE expenses.expense_id = ?`;
+  return `DELETE FROM expenses 
+              WHERE expense_id = ?;`;
 };
 
-const addSplit = () => {
-  return `INSERT INTO splits (id, id_split, expense_id, name, description, date, paid, from_value, from_currency, to_value, to_currency) 
-                                VALUES ("", "${id}", "${expenseID}","${name}","${description}","${date}","${Number(
-    paid
-  )}","${amount.fromValue}","${amount.fromCurrency}","${amount.toValue}","${
-    amount.toCurrency
-  }")`;
+const deleteMultiSplits = () => {
+  return `DELETE FROM splits 
+              WHERE shared_id = ?;`;
+};
+
+const deleteSingleSplits = () => {
+  return `DELETE FROM splits 
+              WHERE expense_id = ?;`;
+};
+
+const makePaidTrue = () => {
+  return `UPDATE splits 
+              SET paid = 1
+                  WHERE split_id = ?;`;
+};
+
+const makePaidMulitTrue = () => {
+  return `UPDATE splits 
+              SET paid = 1
+                  WHERE shared_id = ? 
+                      AND name = ?;`;
 };
 
 module.exports = {
@@ -94,10 +118,14 @@ module.exports = {
   getSplitsFromIdExpenses,
   getProfileFromUserId,
   getHomeCurrencyFromTripId,
-  // deleteSingleExpense,
+  deleteSingleExpense,
+  deleteMultiExpense,
+  deleteMultiSplits,
+  deleteSingleSplits,
   addProfile,
   addTrip,
   addExpense,
-  deleteMultidayExpense,
-  deleteSingleExpense,
+  addSplit,
+  makePaidTrue,
+  makePaidMulitTrue,
 };
