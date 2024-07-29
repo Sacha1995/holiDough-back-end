@@ -1,5 +1,6 @@
 const getTripsFromIdUser = () => {
-  return `SELECT id, 
+  return `SELECT 
+            trip_id AS id, 
             budget_total AS budgetTotal, 
             budget_hotel AS budgetHotel,
             budget_food AS budgetFood, 

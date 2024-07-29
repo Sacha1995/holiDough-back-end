@@ -8,8 +8,7 @@ let cache = { USD: { timestamp: 12345, data: {} } };
 
 // get conversion rates for currencies
 router.get("/:tripId", async (req, res) => {
-  req.params.tripId = 11;
-  const tripId = Number(req.params.tripId);
+  const tripId = req.params.tripId;
 
   //do checks for trip ID
   if (!tripId) {
@@ -19,12 +18,12 @@ router.get("/:tripId", async (req, res) => {
     });
   }
 
-  if (typeof tripId !== "number") {
-    return res.status(400).send({
-      status: 0,
-      message: "trip id must be a number",
-    });
-  }
+  // if (typeof tripId !== "number") {
+  //   return res.status(400).send({
+  //     status: 0,
+  //     message: "trip id must be a number",
+  //   });
+  // }
 
   //get the homecurrency
   let homeCurrency;

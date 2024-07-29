@@ -7,7 +7,7 @@ const joi = require("joi");
 
 // get profile info
 router.get("/", async (req, res) => {
-  const id = Number(req.userId);
+  const id = req.userId;
 
   //do checks for user ID
   if (!id) {
