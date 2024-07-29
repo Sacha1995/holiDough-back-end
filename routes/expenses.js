@@ -21,6 +21,7 @@ const schema = Joi.object({
   category: Joi.string().required(),
   description: Joi.string().required(),
   sharedId: Joi.string().allow(null),
+  id: Joi.string().required(),
 });
 
 router.post("/", async (req, res) => {
