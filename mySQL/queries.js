@@ -1,5 +1,6 @@
 const getTripsFromIdUser = () => {
-  return `SELECT id, 
+  return `SELECT 
+            trip_id AS id, 
             budget_total AS budgetTotal, 
             budget_hotel AS budgetHotel,
             budget_food AS budgetFood, 
@@ -64,8 +65,8 @@ const addProfile = () => {
 };
 
 const addTrip = () => {
-  return `INSERT INTO trips (user_id, budget_total, budget_hotel, budget_food, budget_transport, budget_activities, budget_other, home_currency, destination, start_date, end_date, start_date_included, end_date_included) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+  return `INSERT INTO trips (user_id, trip_id, budget_total, budget_hotel, budget_food, budget_transport, budget_activities, budget_other, home_currency, destination, start_date, end_date, start_date_included, end_date_included) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 `;
 };
 
