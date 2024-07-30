@@ -21,16 +21,16 @@ router.post("/", async (req, res) => {
   }
 
   const {
-      budgetTotal,
-      budgetHotel,
-      budgetFood,
-      budgetTransport,
-      budgetActivities,
-      budgetOther,
-      homeCurrency,
-      destination,
-      dates: { startDate, endDate, startDateIncluded, endDateIncluded },
-    }= trip;
+    budgetTotal,
+    budgetHotel,
+    budgetFood,
+    budgetTransport,
+    budgetActivities,
+    budgetOther,
+    homeCurrency,
+    destination,
+    dates: { startDate, endDate, startDateIncluded, endDateIncluded },
+  } = trip;
 
   const params = [
     req.userId,
@@ -50,7 +50,6 @@ router.post("/", async (req, res) => {
   ];
 
   try {
-    console.log(addTrip(trip), params);
     const result = await query(addTrip(), params);
 
     if (!result.affectedRows) {
