@@ -30,11 +30,12 @@ router.post("/", async (req, res) => {
   const validation = schema.validate(req.body.billSplit, { abortEarly: false });
 
   if (validation.error) {
-    console.log("Error", validation.error);
-    res.status(418).send(validation.error.details);
+    // console.log("Error", validation.error);
+    res.status(418).send({status:0});
     return;
   }
 
+<<<<<<< HEAD
   const {
     date,
     amount,
@@ -46,6 +47,11 @@ router.post("/", async (req, res) => {
     sharedId = "",
   } = req.body.billSplit;
   const { fromValue, fromCurrency, toValue, toCurrency } = amount;
+=======
+  // console.log("Adding splits");
+
+  // check tripID exists, I don't think you need tripID.
+>>>>>>> 2d2c627b30d1fb437613693e2698f2c27c6e587a
 
   // If it does then deconstruct the request and send into query
   const params = [
@@ -63,9 +69,9 @@ router.post("/", async (req, res) => {
   ];
   try {
     const result = await query(addSplit(), params);
-    console.log(result);
+    // console.log(result);
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     res
       .status(418)
       .send({ status: 0, message: "could not put split in database" });
@@ -77,7 +83,7 @@ router.post("/", async (req, res) => {
 router.delete("/shared/:id", async (req, res) => {
   let id = req.params.id;
   // need to add checks for sharedid
-  console.log(id, "INSIDE");
+  // console.log(id, "INSIDE");
 
   try {
     let result = await query(deleteMultiSplits(), [id]);
@@ -85,14 +91,14 @@ router.delete("/shared/:id", async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).send({
         status: 0,
-        message: `splits with shared_id ${id} not found`,
+        message: `splits not found`,
       });
     }
 
-    console.log(`Deleted ${result.affectedRows} splits with shared_id: ${id}`);
-    res.send({ status: 1, message: `Deleted ${result.affectedRows} splits` });
+    // console.log(`Deleted ${result.affectedRows} splits with shared_id: ${id}`);
+    res.send({ status: 1, message: `Deleted splits` });
   } catch (error) {
-    console.error(`Error deleting splits with shared_id: ${id}`, error);
+    // console.error(`Error deleting splits with shared_id: ${id}`, error);
     res.status(400).send({
       status: 0,
       message: "Failed to delete splits",
@@ -103,7 +109,7 @@ router.delete("/shared/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   let id = req.params.id;
   // need to add checks for id
-  console.log(id, "INSIDE");
+  // console.log(id, "INSIDE");
 
   try {
     const result = await query(deleteSingleSplits(), [id]);
@@ -111,16 +117,16 @@ router.delete("/:id", async (req, res) => {
     if (result.affectedRows === 0) {
       return res
         .status(404)
-        .send({ status: 0, message: `Split with id ${id} not found` });
+        .send({ status: 0, message: `Split not found` });
     }
 
-    console.log(`Deleted split with id: ${id}`);
+    // console.log(`Deleted split with id: ${id}`);
     res.send({
       status: 1,
       message: `Delete successful`,
     });
   } catch (error) {
-    console.error(`Error deleting split with id: ${id}`, error);
+    // console.error(`Error deleting split with id: ${id}`, error);
     res.status(400).send({
       status: 0,
       message: "Failed to delete split",
@@ -138,7 +144,7 @@ router.patch("/paid/:id/:name", async (req, res) => {
       if (result.affectedRows === 0) {
         return res.status(404).send({
           status: 0,
-          message: `Splits with sharedId ${id} and name ${name} not found`,
+          message: `Splits not found`,
         });
       }
       res.send({
@@ -147,10 +153,10 @@ router.patch("/paid/:id/:name", async (req, res) => {
       });
       return;
     } catch (e) {
-      console.log(
-        `Error changing splits with sharedId: ${id} and name ${name}`,
-        e
-      );
+      // console.log(
+      //   `Error changing splits with sharedId: ${id} and name ${name}`,
+      //   e
+      // );
       res
         .status(400)
         .send({ status: 0, message: "Failed to turn paid into true" });
@@ -163,7 +169,7 @@ router.patch("/paid/:id/:name", async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).send({
         status: 0,
-        message: `Split with id ${id} and name ${name} not found`,
+        message: `Split not found`,
       });
     }
     res.send({
@@ -172,7 +178,7 @@ router.patch("/paid/:id/:name", async (req, res) => {
     });
     return;
   } catch (e) {
-    console.log(`Error changing split with id: ${id} and name ${name}`, e);
+    // console.log(`Error changing split with id: ${id} and name ${name}`, e);
     res
       .status(400)
       .send({ status: 0, message: "Failed to turn paid into true" });

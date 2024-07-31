@@ -31,7 +31,7 @@ router.get("/:tripId", async (req, res) => {
     result = await query(getHomeCurrencyFromTripId(), [tripId]);
     homeCurrency = result[0].home_currency;
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return res.status(400).send({
       status: 0,
       message: "Could not get homeCurrency",
@@ -40,7 +40,7 @@ router.get("/:tripId", async (req, res) => {
 
   //check if the data is in the cache and less than 3 hours old
   if (cache[homeCurrency] && withinThreeHours(cache[homeCurrency].timestamp)) {
-    console.log("Serving from cache");
+    // console.log("Serving from cache");
     res.send(cache[homeCurrency].data);
     return;
   }
@@ -51,7 +51,7 @@ router.get("/:tripId", async (req, res) => {
     newData = require(`../fakeCurrencies.json`);
     // const {data} = await query(`URLHERE${homecurrency}`);
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return res.status(400).send({
       status: 0,
       message: "error getting the conversion rates",
