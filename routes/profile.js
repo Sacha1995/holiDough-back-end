@@ -35,7 +35,8 @@ router.get("/", async (req, res) => {
     });
   }
 
-  res.send(profile[0]);
+  //The below has already been sanitised on insertion
+  res.send(profile[0]); 
 });
 
 router.post("/", async (req, res) => {
