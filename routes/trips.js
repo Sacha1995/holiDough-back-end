@@ -4,7 +4,6 @@ const { getAndStructureData } = require("../utils");
 
 // get trip info
 router.get("/", async (req, res) => {
-  console.log(req.userId);
   const id = Number(req.userId);
 
   //do checks for user ID
@@ -27,7 +26,7 @@ router.get("/", async (req, res) => {
     const tripsComplete = await getAndStructureData(id);
     res.send({ status: 1, tripsComplete });
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return res.status(400).send({
       status: 0,
       message: "Something has gone wrong retrieving the trips",
