@@ -29,6 +29,7 @@ const getAndStructureData = async (id) => {
       budgetOther,
       homeCurrency,
       destination,
+      destinationCurrency,
       startDate,
       endDate,
       startDateIncluded,
@@ -46,6 +47,7 @@ const getAndStructureData = async (id) => {
         budgetOther,
         homeCurrency,
         destination,
+        destinationCurrency,
         dates: {
           startDate,
           endDate,

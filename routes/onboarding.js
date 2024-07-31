@@ -29,6 +29,7 @@ router.post("/", async (req, res) => {
     budgetOther,
     homeCurrency,
     destination,
+    destinationCurrency,
     dates: { startDate, endDate, startDateIncluded, endDateIncluded },
   } = trip;
 
@@ -43,6 +44,7 @@ router.post("/", async (req, res) => {
     budgetOther,
     homeCurrency,
     destination,
+    destinationCurrency,
     startDate,
     endDate,
     startDateIncluded,

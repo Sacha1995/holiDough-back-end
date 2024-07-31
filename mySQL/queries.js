@@ -8,6 +8,7 @@ const getTripsFromIdUser = () => {
             budget_activities AS budgetActivities,
             budget_other AS budgetOther,
             home_currency AS homeCurrency,
+            destination_currency AS destinationCurrency,
             start_date AS startDate,
             end_date AS endDate,
             start_date_included AS startDateIncluded,
@@ -65,8 +66,8 @@ const addProfile = () => {
 };
 
 const addTrip = () => {
-  return `INSERT INTO trips (user_id, trip_id, budget_total, budget_hotel, budget_food, budget_transport, budget_activities, budget_other, home_currency, destination, start_date, end_date, start_date_included, end_date_included) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+  return `INSERT INTO trips (user_id, trip_id, budget_total, budget_hotel, budget_food, budget_transport, budget_activities, budget_other, home_currency, destination, destination_currency, start_date, end_date, start_date_included, end_date_included) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 `;
 };
 
