@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
     req.body.expense;
 
   if (validation.error) {
-    console.log("Error 2", validation.error);
+    // console.log("Error 2", validation.error);
     res.status(418).send(validation.error.details);
     return;
   }
@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
   try {
     await query(addExpense(), params);
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return res.send({
       status: 0,
       message: "something went wrong with adding the expense",
@@ -77,9 +77,9 @@ router.delete("/shared/:id", async (req, res) => {
       });
     }
 
-    console.log(
-      `Deleted ${result.affectedRows} expenses with shared_id: ${id}`
-    );
+    // console.log(
+    //   `Deleted ${result.affectedRows} expenses with shared_id: ${id}`
+    // );
     res.send({ status: 1, message: `Deleted ${result.affectedRows} expenses` });
   } catch (error) {
     console.error(`Error deleting expenses with shared_id: ${id}`, error);
@@ -93,12 +93,12 @@ router.delete("/shared/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   let id = req.params.id;
   // need to add checks for id
-  console.log(id, "INSIDE");
+  // console.log(id, "INSIDE");
 
   try {
     const result = await query(deleteSingleExpense(), [id]);
 
-    console.log(result);
+    // console.log(result);
 
     if (result.affectedRows === 0) {
       return res
@@ -106,7 +106,7 @@ router.delete("/:id", async (req, res) => {
         .send({ status: 0, message: `Expense with id ${id} not found` });
     }
 
-    console.log(`Deleted expense with id: ${id}`);
+    // console.log(`Deleted expense with id: ${id}`);
     res.send({
       status: 1,
       message: `Delete successful`,

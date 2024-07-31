@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.delete("/:id", async (req, res) => {
   let id = req.params.id;
-  console.log(req, id, "INSIDE goodbye");
+  // console.log(req, id, "INSIDE goodbye");
   if ((id = "impossible")) {
     let tripData = await query(
       `DELETE trips, expenses, splits, 

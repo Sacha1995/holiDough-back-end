@@ -33,12 +33,12 @@ router.post("/", async (req, res) => {
   const { fromValue, fromCurrency, toValue, toCurrency } = amount;
 
   if (validation.error) {
-    console.log("Error", validation.error);
+    // console.log("Error", validation.error);
     res.status(418).send(validation.error.details);
     return;
   }
 
-  console.log("Adding splits");
+  // console.log("Adding splits");
 
   // check tripID exists, I don't think you need tripID.
 
@@ -58,9 +58,9 @@ router.post("/", async (req, res) => {
   ];
   try {
     const result = await query(addSplit(), params);
-    console.log(result);
+    // console.log(result);
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     res
       .status(418)
       .send({ status: 0, message: "could not put split in database" });
@@ -72,7 +72,7 @@ router.post("/", async (req, res) => {
 router.delete("/shared/:id", async (req, res) => {
   let id = req.params.id;
   // need to add checks for sharedid
-  console.log(id, "INSIDE");
+  // console.log(id, "INSIDE");
 
   try {
     let result = await query(deleteMultiSplits(), [id]);
@@ -84,7 +84,7 @@ router.delete("/shared/:id", async (req, res) => {
       });
     }
 
-    console.log(`Deleted ${result.affectedRows} splits with shared_id: ${id}`);
+    // console.log(`Deleted ${result.affectedRows} splits with shared_id: ${id}`);
     res.send({ status: 1, message: `Deleted ${result.affectedRows} splits` });
   } catch (error) {
     console.error(`Error deleting splits with shared_id: ${id}`, error);
@@ -98,7 +98,7 @@ router.delete("/shared/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   let id = req.params.id;
   // need to add checks for id
-  console.log(id, "INSIDE");
+  // console.log(id, "INSIDE");
 
   try {
     const result = await query(deleteSingleSplits(), [id]);
@@ -109,7 +109,7 @@ router.delete("/:id", async (req, res) => {
         .send({ status: 0, message: `Split with id ${id} not found` });
     }
 
-    console.log(`Deleted split with id: ${id}`);
+    // console.log(`Deleted split with id: ${id}`);
     res.send({
       status: 1,
       message: `Delete successful`,
@@ -142,10 +142,10 @@ router.patch("/paid/:id/:name", async (req, res) => {
       });
       return;
     } catch (e) {
-      console.log(
-        `Error changing splits with sharedId: ${id} and name ${name}`,
-        e
-      );
+      // console.log(
+      //   `Error changing splits with sharedId: ${id} and name ${name}`,
+      //   e
+      // );
       res
         .status(400)
         .send({ status: 0, message: "Failed to turn paid into true" });
@@ -167,7 +167,7 @@ router.patch("/paid/:id/:name", async (req, res) => {
     });
     return;
   } catch (e) {
-    console.log(`Error changing split with id: ${id} and name ${name}`, e);
+    // console.log(`Error changing split with id: ${id} and name ${name}`, e);
     res
       .status(400)
       .send({ status: 0, message: "Failed to turn paid into true" });
