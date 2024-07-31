@@ -3,9 +3,9 @@ const query = require("../mySQL/connection");
 const router = express.Router();
 
 router.delete("/:id", async (req, res) => {
-  let id = req.params.id;
+  const id = req.userId;
+
   // console.log(req, id, "INSIDE goodbye");
-  if ((id = "impossible")) {
     let tripData = await query(
       `DELETE trips, expenses, splits, 
           FROM trips  
@@ -24,7 +24,6 @@ router.delete("/:id", async (req, res) => {
                           ON tokens.user_id=profile.user_id
                               WHERE users.id=${id};  `
     );
-  }
 
   res.send({ status: 1 });
 });
