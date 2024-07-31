@@ -31,11 +31,10 @@ router.post("/", async (req, res) => {
 
   if (validation.error) {
     // console.log("Error", validation.error);
-    res.status(418).send({status:0});
+    res.status(418).send({ status: 0 });
     return;
   }
 
-<<<<<<< HEAD
   const {
     date,
     amount,
@@ -47,11 +46,6 @@ router.post("/", async (req, res) => {
     sharedId = "",
   } = req.body.billSplit;
   const { fromValue, fromCurrency, toValue, toCurrency } = amount;
-=======
-  // console.log("Adding splits");
-
-  // check tripID exists, I don't think you need tripID.
->>>>>>> 2d2c627b30d1fb437613693e2698f2c27c6e587a
 
   // If it does then deconstruct the request and send into query
   const params = [
@@ -115,9 +109,7 @@ router.delete("/:id", async (req, res) => {
     const result = await query(deleteSingleSplits(), [id]);
 
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .send({ status: 0, message: `Split not found` });
+      return res.status(404).send({ status: 0, message: `Split not found` });
     }
 
     // console.log(`Deleted split with id: ${id}`);
