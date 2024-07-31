@@ -3,7 +3,9 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const helmet = require("helmet");
 
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use("/user", require("./routes/user"));

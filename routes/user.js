@@ -10,16 +10,17 @@ router.post("/login", async (req, res) => {
   const results = await query(
     `SELECT id 
       FROM users 
-        WHERE email LIKE "${email}" 
+        WHERE email LIKE ?
           AND hashed_password 
-            LIKE "${hashed_password}";`
+            LIKE ?;`,
+    [email, hashed_password]
   );
-  console.log(results);
+
   if (results.length > 0) {
     const token = genToken();
-    await query(
-      `INSERT INTO tokens (user_id, token) VALUES ("${results.id}", "${token}")`
-    );
+    await query(`INSERT INTO tokens (user_id, token) VALUES (?, ?)`, [
+      (results.id, token),
+    ]);
 
     res.send({ status: 1, token });
   } else if (!email || !password) {
@@ -29,8 +30,6 @@ router.post("/login", async (req, res) => {
     res.status(400);
     res.send({ status: 0 });
   }
-
-  console.log(genToken());
 });
 
 router.post("/signup", async (req, res) => {
@@ -39,7 +38,8 @@ router.post("/signup", async (req, res) => {
     const hashed_password = sha256(process.env.SALT + password);
     const results = await query(
       `INSERT INTO users (email, hashed_password) 
-        VALUES ('${email}', '${hashed_password}')`
+        VALUES (?, ?)`,
+      [email, hashed_password]
     );
     res.send({ status: 1 });
   } catch (e) {
@@ -47,7 +47,7 @@ router.post("/signup", async (req, res) => {
       res.status(400);
       res.send({ status: 0, error: "Duplicate User" });
     } else {
-      res.send({ status: 0, error: e });
+      res.send({ status: 0, error: "Unknown Error" });
     }
   }
 });
