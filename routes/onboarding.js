@@ -7,7 +7,7 @@ const joi = require("joi");
 
 router.post("/", async (req, res) => {
   const trip = req.body._onboardingDetails.details;
-  const id = req.body._onboardingDetails.id;
+  const tripId = req.body._onboardingDetails.tripId;
 
   if (!trip) {
     res.status(400).send("No trip received");
@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
 
   const params = [
     req.userId,
-    id,
+    tripId,
     budgetTotal,
     budgetHotel,
     budgetFood,
@@ -50,7 +50,6 @@ router.post("/", async (req, res) => {
   ];
 
   try {
-    console.log(addTrip(trip), params);
     const result = await query(addTrip(), params);
 
     if (!result.affectedRows) {

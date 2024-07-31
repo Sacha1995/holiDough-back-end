@@ -54,12 +54,12 @@ router.post("/", async (req, res) => {
   try {
     const result = await query(addProfile(), params);
     console.log(result);
-    // if (!result.affectedRows) {
-    //   throw new Error("failed to send data to store");
-    // } else {
-    //   res.status(200).send("profile added successfully");
-    //   return;
-    // }
+    if (!result.affectedRows) {
+      throw new Error("failed to send data to store");
+    } else {
+      res.status(200).send("profile added successfully");
+      return;
+    }
   } catch (e) {
     console.log(e);
     res.status(400).send("Could not send profile to db");
