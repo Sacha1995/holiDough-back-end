@@ -28,9 +28,6 @@ const schema = Joi.object({
 
 router.post("/", async (req, res) => {
   const validation = schema.validate(req.body.billSplit, { abortEarly: false });
-  const { date, amount, paid, name, description, id, expenseId, sharedId } =
-    req.body.billSplit;
-  const { fromValue, fromCurrency, toValue, toCurrency } = amount;
 
   if (validation.error) {
     console.log("Error", validation.error);
@@ -38,15 +35,23 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  console.log("Adding splits");
-
-  // check tripID exists, I don't think you need tripID.
+  const {
+    date,
+    amount,
+    paid,
+    name,
+    description,
+    id,
+    expenseId,
+    sharedId = "",
+  } = req.body.billSplit;
+  const { fromValue, fromCurrency, toValue, toCurrency } = amount;
 
   // If it does then deconstruct the request and send into query
   const params = [
     id,
     expenseId,
-    sharedId || "",
+    sharedId,
     name,
     description,
     date,

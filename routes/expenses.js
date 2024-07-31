@@ -26,8 +26,6 @@ const schema = Joi.object({
 
 router.post("/", async (req, res) => {
   const validation = schema.validate(req.body.expense, { abortEarly: false });
-  const { date, amount, split, category, description, id, sharedId } =
-    req.body.expense;
 
   if (validation.error) {
     console.log("Error 2", validation.error);
@@ -35,14 +33,26 @@ router.post("/", async (req, res) => {
     return;
   }
 
+  const {
+    date,
+    amount,
+    split,
+    category,
+    description,
+    id,
+    sharedId = "",
+  } = req.body.expense;
+  const { tripID } = req.body;
+
   //create array of params to send to SQL
   const params = [
     id,
-    req.body.tripID,
-    sharedId || "",
+    tripID,
+    sharedId,
     category,
     description,
     date,
+    // split is originally a boolean and is already validated
     Number(split),
     amount.fromValue,
     amount.fromCurrency,
