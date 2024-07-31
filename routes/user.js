@@ -11,15 +11,15 @@ router.post("/login", async (req, res) => {
     `SELECT id 
       FROM users 
         WHERE email LIKE ?
-          AND hashed_password 
-            LIKE ?;`,
+          AND hashed_password LIKE ?;`,
     [email, hashed_password]
   );
 
   if (results.length > 0) {
     const token = genToken();
-    await query(`INSERT INTO tokens (user_id, token) VALUES (?, ?)`, [
-      (results.id, token),
+    await query(`INSERT INTO tokens (user_id, token) VALUES (?, ?);`, [
+      results[0].id,
+      token,
     ]);
 
     res.send({ status: 1, token });
