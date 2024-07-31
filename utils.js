@@ -69,10 +69,11 @@ const getAndStructureData = async (id) => {
 
       // Restructure the expenses data
       const transformedExpenses = expenses.map((expense) => {
-        const { fromValue, fromCurrency, toValue, toCurrency, ...rest } =
+        const { fromValue, fromCurrency, toValue, toCurrency, split, ...rest } =
           expense;
         return {
           ...rest,
+          split: Boolean(split),
           amount: {
             fromValue,
             fromCurrency,
@@ -104,10 +105,17 @@ const getAndStructureData = async (id) => {
 
         // If there are splits with this expense, push them into the array of splits and restructure data
         expenseSplits.forEach((split) => {
-          const { fromValue, fromCurrency, toValue, toCurrency, ...rest } =
-            split;
+          const {
+            fromValue,
+            fromCurrency,
+            toValue,
+            toCurrency,
+            paid,
+            ...rest
+          } = split;
           splits.push({
             ...rest,
+            paid: Boolean(paid),
             amount: {
               fromValue,
               fromCurrency,
