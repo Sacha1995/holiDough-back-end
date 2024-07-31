@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
 
   if (validation.error) {
     // console.log("Error 2", validation.error);
-    res.status(418).send(validation.error.details);
+    res.status(418).send({status:0});
     return;
   }
 
@@ -73,16 +73,16 @@ router.delete("/shared/:id", async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).send({
         status: 0,
-        message: `Expenses with shared_id ${id} not found`,
+        message: `ID not found`,
       });
     }
 
     // console.log(
     //   `Deleted ${result.affectedRows} expenses with shared_id: ${id}`
     // );
-    res.send({ status: 1, message: `Deleted ${result.affectedRows} expenses` });
+    res.send({ status: 1, message: `Deleted expense/s` });
   } catch (error) {
-    console.error(`Error deleting expenses with shared_id: ${id}`, error);
+    // console.error(`Error deleting expenses with shared_id: ${id}`, error);
     res.status(400).send({
       status: 0,
       message: "Failed to delete expenses",
@@ -103,7 +103,7 @@ router.delete("/:id", async (req, res) => {
     if (result.affectedRows === 0) {
       return res
         .status(404)
-        .send({ status: 0, message: `Expense with id ${id} not found` });
+        .send({ status: 0, message: `Expense ID not found` });
     }
 
     // console.log(`Deleted expense with id: ${id}`);
@@ -112,7 +112,7 @@ router.delete("/:id", async (req, res) => {
       message: `Delete successful`,
     });
   } catch (error) {
-    console.error(`Error deleting expense with id: ${id}`, error);
+    // console.error(`Error deleting expense with id: ${id}`, error);
     res.status(500).send({
       status: 0,
       message: "Failed to delete expense",
