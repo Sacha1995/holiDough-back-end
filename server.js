@@ -26,9 +26,7 @@ async function checkToken(req, res, next) {
 app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: "300kb" }));
-app.use(request);
 app.use("/user", require("./routes/user"));
-app.use("/demo", require("./routes/demo"));
 app.use("/expenses", checkToken, require("./routes/expenses"));
 app.use("/splits", checkToken, require("./routes/splits"));
 app.use("/trips", checkToken, require("./routes/trips"));
