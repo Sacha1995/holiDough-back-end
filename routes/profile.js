@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
   try {
     profile = await query(getProfileFromUserId(), [id]);
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return res.status(400).send({
       status: 0,
       message: "could not find your profile",
@@ -54,7 +54,6 @@ router.post("/", async (req, res) => {
 
   try {
     const result = await query(addProfile(), params);
-    console.log(result);
     if (!result.affectedRows) {
       throw new Error("failed to send data to store");
     } else {
@@ -62,7 +61,7 @@ router.post("/", async (req, res) => {
       return;
     }
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     res.status(400).send("Could not send profile to db");
     return;
   }
