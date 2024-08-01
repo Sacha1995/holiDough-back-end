@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
 
   if (validation.error) {
     // console.log("Error 2", validation.error);
-    res.status(418).send({status:0});
+    res.status(418).send({ status: 0 });
     return;
   }
 
@@ -75,11 +75,19 @@ router.post("/", async (req, res) => {
 
 router.delete("/shared/:id", async (req, res) => {
   let id = req.params.id;
-  // need to add checks for sharedid
+  let userId = req.userId;
 
+  // check the sharedId
+  if (typeof id !== "string" || id.length !== 31 || !id.includes("sharedId")) {
+    return res.status(404).send({
+      status: 0,
+      message: `Wrong Id`,
+    });
+  }
+
+  //make sure the expense is an expense of this user by joining expense and trips table. See queries
   try {
-    let result = await query(deleteMultiExpense(), [id]);
-
+    let result = await query(deleteMultiExpense(), [id, userId]);
     if (result.affectedRows === 0) {
       return res.status(404).send({
         status: 0,
@@ -92,7 +100,7 @@ router.delete("/shared/:id", async (req, res) => {
     // );
     res.send({ status: 1, message: `Deleted expense/s` });
   } catch (error) {
-    // console.error(`Error deleting expenses with shared_id: ${id}`, error);
+    console.error(`Error deleting expenses with shared_id: ${id}`, error);
     res.status(400).send({
       status: 0,
       message: "Failed to delete expenses",
@@ -102,11 +110,18 @@ router.delete("/shared/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   let id = req.params.id;
+  let userId = req.userId;
+
   // need to add checks for id
-  // console.log(id, "INSIDE");
+  if (typeof id !== "string" || id.length !== 30 || !id.includes("expense")) {
+    return res.status(404).send({
+      status: 0,
+      message: `Wrong Id`,
+    });
+  }
 
   try {
-    const result = await query(deleteSingleExpense(), [id]);
+    const result = await query(deleteSingleExpense(), [id, userId]);
 
     // console.log(result);
 

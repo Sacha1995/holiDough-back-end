@@ -75,12 +75,19 @@ router.post("/", async (req, res) => {
 });
 
 router.delete("/shared/:id", async (req, res) => {
-  let id = req.params.id;
-  // need to add checks for sharedid
-  // console.log(id, "INSIDE");
+  const id = req.params.id;
+  const userId = req.userId;
+
+  // check the sharedId
+  if (typeof id !== "string" || id.length !== 31 || !id.includes("sharedId")) {
+    return res.status(404).send({
+      status: 0,
+      message: `Wrong Id`,
+    });
+  }
 
   try {
-    let result = await query(deleteMultiSplits(), [id]);
+    const result = await query(deleteMultiSplits(), [id, userId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).send({
@@ -101,13 +108,19 @@ router.delete("/shared/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  let id = req.params.id;
+  const id = req.params.id;
+  const userId = req.userId;
+
   // need to add checks for id
-  // console.log(id, "INSIDE");
+  if (typeof id !== "string" || id.length !== 30 || !id.includes("expense")) {
+    return res.status(404).send({
+      status: 0,
+      message: `Wrong Id`,
+    });
+  }
 
   try {
-    const result = await query(deleteSingleSplits(), [id]);
-
+    const result = await query(deleteSingleSplits(), [id, userId]);
     if (result.affectedRows === 0) {
       return res.status(404).send({ status: 0, message: `Split not found` });
     }

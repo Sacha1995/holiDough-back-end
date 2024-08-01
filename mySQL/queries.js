@@ -82,23 +82,29 @@ const addSplit = () => {
 };
 
 const deleteMultiExpense = () => {
-  return `DELETE FROM expenses 
-              WHERE shared_id = ?;`;
+  return `DELETE expenses FROM expenses 
+              JOIN trips ON expenses.trip_id = trips.trip_id
+                  WHERE shared_id = ? AND trips.user_id = ?;`;
 };
 
 const deleteSingleExpense = () => {
-  return `DELETE FROM expenses 
-              WHERE expense_id = ?;`;
+  return `DELETE expenses FROM expenses 
+              JOIN trips ON expenses.trip_id = trips.trip_id
+                  WHERE expense_id = ? AND trips.user_id = ?;`;
 };
 
 const deleteMultiSplits = () => {
-  return `DELETE FROM splits 
-              WHERE shared_id = ?;`;
+  return `DELETE splits FROM splits
+            JOIN expenses ON splits.expense_id = expenses.expense_id
+              JOIN trips ON expenses.trip_id = trips.trip_id
+                WHERE splits.shared_id = ? AND trips.user_id = ?;`;
 };
 
 const deleteSingleSplits = () => {
-  return `DELETE FROM splits 
-              WHERE expense_id = ?;`;
+  return `DELETE splits FROM splits
+            JOIN expenses ON splits.expense_id = expenses.expense_id
+              JOIN trips ON expenses.trip_id = trips.trip_id
+                WHERE splits.expense_id = ? AND trips.user_id = ?;`;
 };
 
 const makePaidTrue = () => {
