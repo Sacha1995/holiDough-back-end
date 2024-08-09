@@ -10,4 +10,4 @@ For currency conversion, we integrate with an external API, and the results are 
 
 We rigorously validate all user inputs to prevent the acceptance of invalid data. Before making any changes to the database, we verify the token and user ID to ensure that only authorized modifications are allowed. Additionally, users can only alter information associated with their own accounts.
 
-Used tech: Express, mySQL, Joi
+Used tech: Express, mySQL, Joi, Axios
